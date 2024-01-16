@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Nightjar by tengille</title>
+        <title>Nightjar</title>
         <style>
             @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,400;0,700;1,400&display=swap');
             @font-face {
@@ -60,28 +60,29 @@
                 cursor: pointer;
             }
         </style>
-        <!-- highlight js -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script>
-            hljs.highlightAll();
+            // hljs.highlightAll();
         </script>
     </head>
     <body>
         <div id="app">
             <div class="banner">
                 <div class="quote">NIGHTJAR</div>
-                <img alt="banner" src="./img/banner.gif" />
+                <img alt="banner" />
             </div>
             <p>
                 Affectionately named after the <a target="_blank" href="https://en.wikipedia.org/wiki/Nightjar">bird</a>,
-                Nigthjar is a "Metal Gear-like" game that I'm working on. I've always enjoyed the
-                series, and this is an attempt to create something akin to the NES/GBC installments. I am making it in <a target="_blank" href="https://gamemaker.io">GameMaker</a>.
+                Nigthjar is a "Metal Gear-like" game. I've always enjoyed the Metal Gear
+                series, and this is an attempt to create something akin to the NES/GBC/PS1 installments.
+                I am making it in <a target="_blank" href="https://gamemaker.io">GameMaker</a>. There's
+                not much going on in there (yet) but <a href="https://discord.gg/CpJw2TS4">join the Discord</a> if you're interested.
             </p>
             <h3>Resources</h3>
             <p>
-                Below is a list of websites and tools I've used. Its incomplete, as when I get into
-                a "Google'ing" mode, in an effort to find a solution or assistance with something,
+                Below is a list of websites and tools I've used so far. Its incomplete, as when I get into
+                a "Google'ing mode", in an effort to find a solution or assistance with something,
                 I may forget to record it.
             </p>
             <ol>
@@ -89,26 +90,60 @@
                 <li><a href="https://sfxr.me/">jsfxr - 8 bit sfx generator</a></li>
                 <li><a href="https://www.youtube.com/watch?v=qTqDY4JtFfo&list=PL14Yj-e2sgzxTXIRYH-J2_PWAZRMahfLb">Peyton Burnham's YouTube on "How to Make a Top Down Shooter in GameMaker Studio 2</a></li>
             </ol>
+            <h3>Job postings</h3>
+            <p>
+                These are both paid jobs but in an effort of full transparency, there won't be "mega bucks" involved here.
+                I am a solo developer, who isn't horrible at programming, and isn't a musician or artist.
+            </p>
+            <ul>
+                <li>Pixel artist</li>
+                <p>
+                    I am looking for a pixel artist to help me "reskin" the game, eventually. Some familiarity
+                    working on games, specifically GameMaker, is a bonus, but <b>no games experience is required!</b>
+                    If you're interested, shoot me a message on Discord (@tengille), or in the Discord. Familiarity with the Metal Gear
+                    series, specifically MGS (PS1) and Ghost Babel (GBC) would be nice. The sprite sheet in
+                    the above "Resources" section, and perhaps playing Ghost Babel a bit (<a href="https://www.retrogames.cc/gameboycolor-games/metal-gear-solid-usa.html">its free online HERE</a>),
+                    may be advantageous as well. Don't worry, you can use a controller.
+                </p>
+                <li>Chiptune artist</li>
+                <p>
+                    I am looking for a chiptune artist to help me make a few tracks for the game, eventually. Some, but not
+                    all tracks would include "Main title", "Sneaking song", "Boss fight music", "Alert music", etc.
+                    Some familiarity working on games, is a bonus, but <b>no games experience is required!</b>
+                    If you're interested, shoot me a message on Discord (@tengille), or in the Discord. Familiarity with the Metal Gear
+                    series, specifically MGS (PS1) and Ghost Babel (GBC) would be nice. The Ghost Babel
+                    OST can be found <a href="https://www.youtube.com/playlist?list=PLYvFH2GxNYeaJrq8BPGjb91ddJnbanvz1">HERE</a>,
+                    and the MGS OST can be found <a href="https://youtu.be/fKt_-_wfSiY?t=1821">HERE</a>, as some inspiration.
+                </p>
+            </ul>
             <h3>Feature/Task Tracker</h3>
             <ul>
                 <h4>10 Jan 2024</h4>
                 <div><input type="checkbox" checked /><label>8 way movement</label></div>
                 <div><input type="checkbox" checked /><label>Basic wall collision</label></div>
-                <div><input type="checkbox" checked /><label>STAND -> RUN -> CROUCH -> CRAWL states</label></div>
+                <div><input type="checkbox" checked /><label>Basic player states</label></div>
                 <div><input type="checkbox" checked /><label>Crawl through things</label></div>
                 <div><input type="checkbox" checked /><label>Simple main menu</label></div>
 
                 <h4>17 Jan 2024</h4>
-                <div><input type="checkbox"  /><label>Move between rooms</label></div>
+                <div><input type="checkbox" checked /><label>Move between rooms</label></div>
+                <div><input type="checkbox" checked /><label>Better main menu</label></div>
+                <div><input type="checkbox" checked /><label>"Crawl through" implemented</label></div>
+                <div><input type="checkbox" checked /><label>"Noisy floors"</label></div>
+                <div><input type="checkbox" checked /><label>More story elements complete</label></div>
+                <div><input type="checkbox" checked /><label>World map rough draft / concept complete</label></div>
+                <div><input type="checkbox" checked /><label>"Loading Dock" rough draft / concept complete</label></div>
 
                 <h4>To do...</h4>
-                <div><input type="checkbox"  /><label>Enemy patrols</label></div>
+                <div><input type="checkbox"  /><label>Enemy patrols (Question on pathing)</label></div>
                 <div><input type="checkbox"  /><label>Enemy seeing player</label></div>
+                <div><input type="checkbox"  /><label>CAUTION/ALERT mode</label></div>
                 <div><input type="checkbox"  /><label>Player able to KO enemy (punches)</label></div>
                 <div><input type="checkbox"  /><label>Player able to KO enem< (grab)</label></div>
                 <div><input type="checkbox"  /><label>Player able to "hug" wall</label></div>
                 <div><input type="checkbox"  /><label>Camera shifts on wall "hug"</label></div>
                 <div><input type="checkbox"  /><label>Camera follows player</label></div>
+                <div><input type="checkbox"  /><label>Pause menu </label></div>
             </ul>
             <h3>Devlog</h3>
             <!-- 10 jan 2024 -->
@@ -247,6 +282,10 @@ if moving == <span class="hljs-number">1</span> {
         <div style="height: 100px; width: 100%;"></div>
     </body>
     <script>
+        // highlight JS
+        hljs.highlightAll();
+
+        // devlogs hide/show
         const articles = document.querySelectorAll(".article");
         articles.forEach((article) => {
             article.querySelector(".triangle").addEventListener("click", (e) => {
@@ -261,5 +300,8 @@ if moving == <span class="hljs-number">1</span> {
                 }
             });
         });
+
+        // dynamic banners;
+        document.querySelector('.banner img').src = './img/banners/' + Math.floor(Math.random() * 7) + '.gif';
     </script>
 </html>

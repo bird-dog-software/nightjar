@@ -115,6 +115,18 @@ if place_meeting(x + x_speed, y, obj_warp) || place_meeting(x, y + y_speed, obj_
 	y = obj_warp.rm_goto_y;
 }
 
+// calls
+if place_meeting(x + x_speed, y, obj_call) || place_meeting(x, y + y_speed, obj_call) {
+	// don't let player move
+	x = 0;
+	y = 0;
+	
+	// 
+	audio_play_sound()
+	
+	
+}
+
 // footsteps
 if moving && state == PLAYER_STATE.RUN {
 	if place_meeting(x + x_speed, y, obj_floor_noisy) && place_meeting(x + x_speed, y, obj_floor_noisy) {

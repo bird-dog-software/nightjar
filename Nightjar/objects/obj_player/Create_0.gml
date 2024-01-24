@@ -2,10 +2,13 @@
 
 // debug / temporary variables that need to be refactored
 debug = true;
+
+// state variables
 frame = 0;
 counter = 0;
 moving = false;
 crawling_through = false;
+call_in_progress = false;
 
 // movement variables
 move_direction = 0;
@@ -27,6 +30,7 @@ enum PLAYER_STATE {
 	CROUCH = 2,
 	CRAWL = 3,
 	HUG = 4,
+	CALLING = 5,
 };
 
 enum DIRECTION {

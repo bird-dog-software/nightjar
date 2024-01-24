@@ -26,7 +26,7 @@
   "origin": 0,
   "parent": {
     "name": "Calls",
-    "path": "folders/Objects/Calls.yy",
+    "path": "folders/Sprites/Calls.yy",
   },
   "preMultiplyAlpha": false,
   "sequence": {

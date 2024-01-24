@@ -1,15 +1,15 @@
 {
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
-  "name": "obj_call",
+  "name": "obj_call_signal",
   "eventList": [
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
   ],
   "managed": true,
   "overriddenProperties": [],
   "parent": {
-    "name": "Warps",
-    "path": "folders/Objects/Warps.yy",
+    "name": "Calls",
+    "path": "folders/Objects/Calls.yy",
   },
   "parentObjectId": null,
   "persistent": false,
@@ -25,14 +25,11 @@
   "physicsShape": 1,
   "physicsShapePoints": [],
   "physicsStartAwake": true,
-  "properties": [
-    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"message_pointer","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"0","varType":0,},
-    {"resourceType":"GMObjectProperty","resourceVersion":"1.0","name":"variable_name","filters":[],"listItems":[],"multiselect":false,"rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"value":"0","varType":0,},
-  ],
+  "properties": [],
   "solid": false,
   "spriteId": {
-    "name": "sp_call",
-    "path": "sprites/sp_call/sp_call.yy",
+    "name": "spr_call_signal",
+    "path": "sprites/spr_call_signal/spr_call_signal.yy",
   },
   "spriteMaskId": null,
   "visible": true,

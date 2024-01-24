@@ -7,6 +7,7 @@ var _left_key		  = keyboard_check(ord("A"));
 var _up_key			  = keyboard_check(ord("W"));
 var _down_key		  = keyboard_check(ord("S"));
 var _x_key			  = keyboard_check_released(ord("X"));
+var _z_key			  = keyboard_check_released(ord("Z"));
 
 // === COMPUTED
 moving = _right_key || _left_key || _up_key || _down_key;
@@ -94,37 +95,36 @@ crawling_through = (
 ) && state == PLAYER_STATE.CRAWL;
 
 
-
 // hugs
 if colliding && state == PLAYER_STATE.RUN {
 	hug_timer += 1 / game_get_speed(gamespeed_fps);
-	show_debug_message(hug_timer)
+	// show_debug_message(hug_timer)
 	if frame mod hug_timer == 1 {
-		state = PLAYER_STATE.HUG;
-		direction_of_collision = point_direction(x, y, x + x_speed, y + y_speed)
+		// state = PLAYER_STATE.HUG;
+		// direction_of_collision = point_direction(x, y, x + x_speed, y + y_speed)
 	} else {
+		// INCOMPLETE
 		// BUSTED!!!!!!
-		state = PLAYER_STATE.RUN;
+		// state = PLAYER_STATE.RUN;
 	}
 }
 
-// warps
-if place_meeting(x + x_speed, y, obj_warp) || place_meeting(x, y + y_speed, obj_warp) {
-	room_goto(obj_warp.rm_goto);
-	x = obj_warp.rm_goto_x;
-	y = obj_warp.rm_goto_y;
+// calls
+if place_meeting(x + x_speed, y, obj_call_trigger) ||
+   place_meeting(x, y + y_speed, obj_call_trigger) {
+	if !call_in_progress {
+		instance_create_depth(x, y - 20, 0, obj_call_signal, {});
+		call_in_progress = true;
+		state = PLAYER_STATE.CALLING;
+		obj_call_controller.current_call_pointer = obj_call_trigger.current_call_pointer;
+	}
 }
 
-// calls
-if place_meeting(x + x_speed, y, obj_call) || place_meeting(x, y + y_speed, obj_call) {
-	// don't let player move
-	x = 0;
-	y = 0;
-	
-	// 
-	audio_play_sound()
-	
-	
+if call_in_progress {
+	if _z_key {
+		audio_stop_all();
+		room_goto(rm_call);
+	}
 }
 
 // footsteps
@@ -145,24 +145,22 @@ if sprite_pointer >= 8 {
 }
 
 // === MOVE THE PLAYER
-if state == colliding {
-	// need to figure out how to move away from collide
-	// due to weird bug
-	x -= x_speed;
-	y -= y_speed;
-}
-else if state == PLAYER_STATE.CRAWL {
-	x += x_speed/2;
-	y += y_speed/2;
+if !call_in_progress {
+	if state == PLAYER_STATE.CRAWL {
+		x += x_speed/2;
+		y += y_speed/2;
+	} else {
+		x += x_speed;
+		y += y_speed;
+	}
 } else {
-	x += x_speed;
-	y += y_speed;
+	state = PLAYER_STATE.CROUCH;
 }
 
 // increment frame for animation stuff
 // we don't animate on idle crawls
 if moving == 0 && state == PLAYER_STATE.CRAWL {
-	frame += 0
+	frame += 0;
 } else {
 	frame += 1;
 }

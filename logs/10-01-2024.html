@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nightjar</title>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <a href="../index.html">
+                <div class="banner">
+                    <div class="quote">NIGHTJAR</div>
+                    <img alt="banner" />
+                </div>
+            </a>
+
+            <div class="article">
+                <h3>10 January 2024</h3>
+                <div class="content">
+                    <p>Following Burnham&#39;s YouTube video, I was able to get eight way moving up and running pretty quickly, along with some very basic collision.</p>
+                    <p>
+                        Sprites were ripped from The Spriter&#39;s Resource, and it wasn&#39;t too bad to get them into sprite sheets and use as needed. They&#39;re still a bit <em>janky</em>, as I don&#39;t know if they&#39;re not
+                        &quot;perfect&quot;, or I&#39;ve done something wrong (most likely the latter). Its not a big deal, as I will reskin the entire game eventually, when its at a good point to.
+                    </p>
+                    <p>
+                        The one thing that was interesting, was the <code>state</code>
+                        related to the player character. In Metal Gear games, Snake can run, crawl, and crouch. In later games (PS2 onward) he can crouch walk, and just walk, leveraging the controller&#39;s sticks.
+                    </p>
+                    <p>
+                        I wanted to have a mix of Ghost Babel (GBC), and Metal Gear Solid (PS1) style movement. I abandoned &quot;rolling&quot; pretty quick, but I may come back to that, as that may be a fun thing to have for a boss fight.
+                        It should look something like...
+                    </p>
+                    <img src="../img/movement.PNG" />
+                    <p>And in code, that looks like...</p>
+                    <pre><code>// create event
+// states
+enum PLAYER_STATE {
+    STAND = <span class="hljs-number">0</span>,
+    RUN = <span class="hljs-number">1</span>,
+    CROUCH = <span class="hljs-number">2</span>,
+    CRAWL = <span class="hljs-number">3</span>,
+};
+
+// step event
+if <span class="hljs-keyword">state</span> == PLAYER_STATE.STAND {
+    if _x_key { <span class="hljs-keyword">state</span> = PLAYER_STATE.CROUCH; }
+    if moving { <span class="hljs-keyword">state</span> = PLAYER_STATE.RUN; }
+}
+else if <span class="hljs-keyword">state</span> == PLAYER_STATE.CROUCH {
+    if _x_key { <span class="hljs-keyword">state</span> = PLAYER_STATE.STAND; }
+    if moving { <span class="hljs-keyword">state</span> = PLAYER_STATE.CRAWL; }
+  }
+else if <span class="hljs-keyword">state</span> == PLAYER_STATE.RUN {
+  if !moving { <span class="hljs-keyword">state</span> = PLAYER_STATE.STAND; }
+  if _x_key { <span class="hljs-keyword">state</span> = PLAYER_STATE.CROUCH; }
+}
+else if <span class="hljs-keyword">state</span> == PLAYER_STATE.CRAWL {
+  if _x_key { <span class="hljs-keyword">state</span> = PLAYER_STATE.CROUCH; }
+}
+</code></pre>
+                    <p>
+                        While reasonably concise, it took a minute to get to this point. Navigating when the player could crouch and what their options were from there, the same for crawling and running (standing but not moving), was all a
+                        bit interesting.
+                    </p>
+                    <p>
+                        Another hurdle was navigating how to do idle sprites, facing the correct way. There is most likely a little bit of redundant code, not only in the example here, but how I&#39;m storing direction. This is in part due
+                        to the way that Burnham&#39;s tutorial did movement. When the object is not moving, it defaults to a <code>sprite_pointer</code> of <code>0</code>. So, I had to make some copy code that memoizes that.
+                    </p>
+                    <pre><code>// create event
+enum DIRECTION {
+    <span class="hljs-attr">RIGHT</span> = <span class="hljs-number">0</span>,
+    <span class="hljs-attr">UP_RIGHT</span> = <span class="hljs-number">1</span>,
+    <span class="hljs-attr">UP</span> = <span class="hljs-number">2</span>,
+    <span class="hljs-attr">UP_LEFT</span> = <span class="hljs-number">3</span>,
+    <span class="hljs-attr">LEFT</span> = <span class="hljs-number">4</span>,
+    <span class="hljs-attr">DOWN_LEFT</span> = <span class="hljs-number">5</span>,
+    <span class="hljs-attr">DOWN</span> = <span class="hljs-number">6</span>,
+    <span class="hljs-attr">DOWN_RIGHT</span> = <span class="hljs-number">7</span>,
+}
+
+<span class="hljs-attr">direction_state</span> = <span class="hljs-number">0</span>;
+
+// step event
+// facing direction
+<span class="hljs-keyword">if</span> _right_key &amp;&amp; _up_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.UP_RIGHT;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _right_key &amp;&amp; _down_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.DOWN_RIGHT;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _left_key &amp;&amp; _up_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.UP_LEFT;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _left_key &amp;&amp; _down_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.DOWN_LEFT;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _down_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.DOWN;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _up_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.UP;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _right_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.RIGHT;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> _left_key {
+    <span class="hljs-attr">direction_state</span> = DIRECTION.LEFT;
+}
+</code></pre>
+                    <p>Its not the most elegant code, but it works. And then drawing the correct sprite looks like...</p>
+                    <pre><code>// draw event
+if moving == <span class="hljs-number">0</span> {
+    if <span class="hljs-keyword">state</span> == PLAYER_STATE.CROUCH {
+        sprite_index = idle_crouch_sprite[direction_state];
+    }
+    else if <span class="hljs-keyword">state</span> == PLAYER_STATE.STAND || <span class="hljs-keyword">state</span> == PLAYER_STATE.RUN {
+        sprite_index = idle_stand_sprite[direction_state];
+    }
+    else if <span class="hljs-keyword">state</span> == PLAYER_STATE.CRAWL {
+        sprite_index = crawl_sprite[direction_state];
+    }
+}
+
+if moving == <span class="hljs-number">1</span> {
+    if <span class="hljs-keyword">state</span> == PLAYER_STATE.RUN {
+        sprite_index = run_sprite[sprite_pointer];
+    }
+    else if <span class="hljs-keyword">state</span> == PLAYER_STATE.CRAWL {
+        sprite_index = crawl_sprite[sprite_pointer];
+    }
+}
+</code></pre>
+                    <p>Again, while all this seems straightforward... it was a fun exercise to see even a glimpse of how state works within a Metal Gear-like game. Below is a progress video:</p>
+                    <iframe
+                        width="100%"
+                        height="480px"
+                        src="https://www.youtube.com/embed/234c48DzAn0?si=J6Uv7A3VWUPHKDZQ"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                    ></iframe>
+                    <p>Thanks for reading.</p>
+                </div>
+            </div>
+        </div>
+        <!-- spacer -->
+        <div style="height: 100px; width: 100%;"></div>
+    </body>
+    <script>
+        // highlight JS
+        hljs.highlightAll();
+
+        // dynamic banners;
+        document.querySelector(".banner img").src = "../img/banners/" + Math.floor(Math.random() * 7) + ".gif";
+    </script>
+</html>

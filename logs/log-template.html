@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nightjar</title>
+        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <a href="../index.html">
+                <div class="banner">
+                    <div class="quote">NIGHTJAR</div>
+                    <img alt="banner" />
+                </div>
+            </a>
+
+            <div class="article">
+                <h3>Date goes here</h3>
+                <div class="content">
+                  Content goes here
+                </div>
+            </div>
+
+        <!-- spacer -->
+        <div style="height: 100px; width: 100%;"></div>
+    </body>
+    <script>
+        // highlight JS
+        hljs.highlightAll();
+
+        // dynamic banners;
+        document.querySelector(".banner img").src = "../img/banners/" + Math.floor(Math.random() * 7) + ".gif";
+    </script>
+</html>

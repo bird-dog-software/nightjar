@@ -1,6 +1,6 @@
 /// @description Insert description here
 
-if keyboard_check(ord("S")) {
+if keyboard_check_pressed(ord("S")) {
 	show_debug_message("Going to next message")
 	message_pointer += 1;
 	if message_pointer > array_length(messages[current_call_pointer].messages) {

@@ -1,5 +1,6 @@
 /// @description Manages calls
 
+
 // profile pictures
 profile_pictures = {
 	"cuckoo": {
@@ -69,14 +70,14 @@ messages[1] = {
 }
 
 // init
-var _pfp = messages[current_call_pointer].init.left;
-var _left_sprite = struct_get(profile_pictures, _pfp);
+var _left_pfp = messages[current_call_pointer].init.left;
+var _left_sprite = struct_get(profile_pictures, _left_pfp);
 if (instance_exists(obj_caller_left)) {
 	obj_caller_left.sprite_index = _left_sprite.profile_picture;
 }
 
-var _pfp = messages[current_call_pointer].init.right;
-var _right_sprite = struct_get(profile_pictures, _pfp);
+var _right_pfp = messages[current_call_pointer].init.right;
+var _right_sprite = struct_get(profile_pictures, _right_pfp);
 if (instance_exists(obj_caller_right)) {
 	obj_caller_right.sprite_index = _right_sprite.profile_picture;
 }

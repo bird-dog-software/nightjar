@@ -1,9 +1,9 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-var _up_key     = keyboard_check_released(ord("W"));
-var _down_key   = keyboard_check_released(ord("S"));
-var _z_key      = keyboard_check_released(ord("Z"));
+var _up_key      = gamepad_button_check_released(obj_global.controller_id, gp_padu);
+var _down_key    = gamepad_button_check_released(obj_global.controller_id, gp_padd);
+var _confirm_key = obj_global.circle_key; // PS O button
 
 if _up_key {
 	menu_pointer -= 1;
@@ -21,7 +21,7 @@ if _down_key {
 	audio_play_sound(snd_menu_select,0,false);
 }
 
-if _z_key {
+if _confirm_key {
 	audio_play_sound(snd_main_menu_confirm, 0, false);
 	switch(menu_pointer) {
 		case 0:

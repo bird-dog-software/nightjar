@@ -1,134 +1,58 @@
-/// @description Insert description here
-// You can write your code in this editor
+/// @description All the code for Nightjar
 
-// === INPUTS
-var _right_key		  = keyboard_check(ord("D"));
-var _left_key		  = keyboard_check(ord("A"));
-var _up_key			  = keyboard_check(ord("W"));
-var _down_key		  = keyboard_check(ord("S"));
-var _x_key			  = keyboard_check_released(ord("X"));
-var _z_key			  = keyboard_check_released(ord("Z"));
+// INPUTS
+var _x_key = obj_global.cross_key;
+var _o_key = obj_global.circle_key;
+var _t_key = obj_global.triangle_key;
+var _s_key = obj_global.square_key;
+var _horizontal  = gamepad_axis_value(obj_global.controller_id, gp_axislh);
+var _vertical    = gamepad_axis_value(obj_global.controller_id, gp_axislv);
 
-// === COMPUTED
-moving = _right_key || _left_key || _up_key || _down_key;
+// MOVEMENT
+move_direction = point_direction(0, 0, _horizontal, _vertical);
 
-// facing direction
-if _right_key && _up_key {
-	direction_state = DIRECTION.UP_RIGHT;
-} else if _right_key && _down_key {
-	direction_state = DIRECTION.DOWN_RIGHT;
-} else if _left_key && _up_key {
-	direction_state = DIRECTION.UP_LEFT;
-} else if _left_key && _down_key {
-	direction_state = DIRECTION.DOWN_LEFT;
-} else if _down_key {
-	direction_state = DIRECTION.DOWN;
-} else if _up_key {
-	direction_state = DIRECTION.UP;
-} else if _right_key {
-	direction_state = DIRECTION.RIGHT;
-} else if _left_key {
-	direction_state = DIRECTION.LEFT;
-}
-
-// === MOVEMENT ( via: https://www.youtube.com/watch?v=qTqDY4JtFfo )
-//  get the direction
-var _horizontal_key = _right_key - _left_key;
-var _vertical_key = _down_key - _up_key;
-move_direction = point_direction(0, 0, _horizontal_key, _vertical_key);
-
-//  get the x and y speeds
 var _speed = 0;
-var _input_level = point_distance(0, 0, _horizontal_key, _vertical_key);
+var _input_level = point_distance(0, 0, _horizontal, _vertical);
 _input_level = clamp(_input_level, 0, 1);
-_speed = move_speed * _input_level;
+_speed = speeds[state] * _input_level;
 
-x_speed = lengthdir_x(_speed, move_direction);
-y_speed = lengthdir_y(_speed, move_direction);
+var _x_speed = lengthdir_x(_speed, move_direction);
+var _y_speed = lengthdir_y(_speed, move_direction);
 
-// === STATES
-if state == PLAYER_STATE.STAND {
-	if _x_key { state = PLAYER_STATE.CROUCH; }
-	if moving { state = PLAYER_STATE.RUN; }
-}
-else if state == PLAYER_STATE.CROUCH {
-	if _x_key { state = PLAYER_STATE.STAND; }
-	if moving { state = PLAYER_STATE.CRAWL; }
-}
-else if state == PLAYER_STATE.RUN {
-	if !moving { state = PLAYER_STATE.STAND; }
-	if _x_key  { state = PLAYER_STATE.CROUCH; }
-}
-else if state == PLAYER_STATE.CRAWL {
-	if !crawling_through {
-		if _x_key { state = PLAYER_STATE.CROUCH; }
-	}
-}
+x += _x_speed;
+y += _y_speed;
 
-// === COLLISIONS
-// walls
-if place_meeting(x + x_speed, y, obj_wall) {
-	colliding = true;
-	x_speed = 0;
-}
-else if place_meeting(x, y + y_speed, obj_wall) {
-	colliding = true;
-	y_speed = 0;
-}
+sprite_pointer = round(move_direction / 45); // 8 way movement
+if sprite_pointer == 8 { sprite_pointer = 0; }
 
-// crawl throughs
-else if place_meeting(x + x_speed, y, obj_wall_crawl_through) && state != PLAYER_STATE.CRAWL {
-	colliding = true;
-	x_speed = 0;
+// determine if we're moving
+var _is_moving = _input_level > obj_global.deadzone_value;
+var _image_index_increment = 1/8;
+
+// MODIFY STATES
+if state == PLAYER_STATES.STAND {
+	if _x_key { state = PLAYER_STATES.CROUCH; }
+	if _is_moving { state = PLAYER_STATES.RUN; }
+	else { _image_index_increment = 0; }
 }
-else if place_meeting(x, y + y_speed, obj_wall_crawl_through) && state != PLAYER_STATE.CRAWL {
-	colliding = true;
-	y_speed = 0;
+else if state == PLAYER_STATES.CROUCH {
+	if _x_key { state = PLAYER_STATES.STAND; }
+	if _is_moving { state = PLAYER_STATES.CRAWL; }
+	else { _image_index_increment = 0; }
 }
-else {
-	colliding = false;
+else if state == PLAYER_STATES.RUN {
+	if !_is_moving { state = PLAYER_STATES.STAND; }
+	if _x_key  { state = PLAYER_STATES.CROUCH; }
+}
+else if state == PLAYER_STATES.CRAWL {
+	if _x_key { state = PLAYER_STATES.CROUCH; }
 }
 
-crawling_through = (
-	place_meeting(x + x_speed, y, obj_wall_crawl_through) ||
-	place_meeting(x, y + y_speed, obj_wall_crawl_through)
-) && state == PLAYER_STATE.CRAWL;
-
-
-// hugs
-if colliding && state == PLAYER_STATE.RUN {
-	hug_timer += 1 / game_get_speed(gamespeed_fps);
-	// show_debug_message(hug_timer)
-	if frame mod hug_timer == 1 {
-		// state = PLAYER_STATE.HUG;
-		// direction_of_collision = point_direction(x, y, x + x_speed, y + y_speed)
-	} else {
-		// INCOMPLETE
-		// BUSTED!!!!!!
-		// state = PLAYER_STATE.RUN;
-	}
-}
-
-// calls
-if place_meeting(x + x_speed, y, obj_call_trigger) ||
-   place_meeting(x, y + y_speed, obj_call_trigger) {
-	if !call_in_progress {
-		instance_create_depth(x, y - 20, 0, obj_call_signal, {});
-		call_in_progress = true;
-		state = PLAYER_STATE.CALLING;
-		obj_call_controller.current_call_pointer = obj_call_trigger.current_call_pointer;
-	}
-}
-
-if call_in_progress {
-	if _z_key {
-		audio_stop_all();
-		room_goto(rm_call);
-	}
-}
+image_index += _image_index_increment;
 
 // footsteps
-if moving && state == PLAYER_STATE.RUN {
+/*
+if moving && state == obj_global.PLAYER_STATES.RUN {
 	if place_meeting(x + x_speed, y, obj_floor_noisy) && place_meeting(x + x_speed, y, obj_floor_noisy) {
 		footstep_timer += 1;
 		if footstep_timer mod 20 == 0 {
@@ -136,32 +60,15 @@ if moving && state == PLAYER_STATE.RUN {
 		}
 	}
 }
+*/
 
 // === SPRITES
-sprite_pointer = round(move_direction / 45);
-
-if sprite_pointer >= 8 {
-	sprite_pointer = 0;
-}
-
-// === MOVE THE PLAYER
-if !call_in_progress {
-	if state == PLAYER_STATE.CRAWL {
-		x += x_speed/2;
-		y += y_speed/2;
-	} else {
-		x += x_speed;
-		y += y_speed;
-	}
-} else {
-	state = PLAYER_STATE.CROUCH;
-}
-
-// increment frame for animation stuff
-// we don't animate on idle crawls
-if moving == 0 && state == PLAYER_STATE.CRAWL {
-	frame += 0;
-} else {
-	frame += 1;
-}
-
+debug_message(
+	$"s: {state}\n" + 
+	$"h: {_horizontal}\n" +
+	$"v: {_vertical}\n" +
+	$"md: {move_direction}\n" +
+	$"sp: {sprite_pointer}\n" +
+	$"si: {sprite_index}" 
+);
+sprite_index = sprites[state][sprite_pointer];

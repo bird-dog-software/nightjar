@@ -19,6 +19,7 @@
     {"name":"Levels","order":6,"path":"folders/Rooms/Levels.yy",},
     {"name":"MainMenu","order":5,"path":"folders/Rooms/MainMenu.yy",},
     {"name":"Scripts","order":5,"path":"folders/Scripts.yy",},
+    {"name":"Player","order":1,"path":"folders/Scripts/Player.yy",},
     {"name":"Sequences","order":11,"path":"folders/Sequences.yy",},
     {"name":"Shaders","order":6,"path":"folders/Shaders.yy",},
     {"name":"Sounds","order":3,"path":"folders/Sounds.yy",},
@@ -46,7 +47,6 @@
     {"name":"Warps","order":7,"path":"folders/Sprites/Warps.yy",},
     {"name":"Tile Sets","order":2,"path":"folders/Tile Sets.yy",},
     {"name":"Timelines","order":8,"path":"folders/Timelines.yy",},
-    {"name":"Player","order":1,"path":"folders/Scripts/Player.yy",},
   ],
   "ResourceOrderSettings": [
     {"name":"spr_player_run_down_left","order":4,"path":"sprites/spr_player_run_down_left/spr_player_run_down_left.yy",},

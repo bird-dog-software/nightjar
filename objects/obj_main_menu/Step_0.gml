@@ -1,9 +1,9 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-var _up_key      = obj_global.d_pad_up;
-var _down_key    = obj_global.d_pad_down;
-var _confirm_key = obj_global.circle_key;
+var _up_key      = obj_global.d_pad_up_released;
+var _down_key    = obj_global.d_pad_down_released;
+var _confirm_key = obj_global.circle_key_released;
 
 if _up_key {
 	menu_pointer -= 1;
@@ -31,9 +31,12 @@ if _confirm_key {
 			room_goto(rm_briefing);
 			break;
 		case 2:
-			room_goto(rm_credits);
+			room_goto(rm_controls);
 			break;
 		case 3:
+			room_goto(rm_credits);
+			break;
+		case 4:
 			game_end(0);
 			break;
 	}

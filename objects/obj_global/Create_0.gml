@@ -18,7 +18,8 @@ enum PLAYER_STATES {
 	CROUCH = 3,
 	CRAWL = 4,
 	HUG = 5,
-	CALLING = 6
+	CALL = 6,
+	PUNCH = 7,
 };
 
 player_states_strings = [
@@ -32,14 +33,25 @@ player_states_strings = [
 ]
 
 // buttons init
-d_pad_up     = 0;
-d_pad_down   = 0;
-d_pad_right  = 0;
-d_pad_left   = 0;
-cross_key    = 0;
-circle_key   = 0;
-triangle_key = 0;
-square_key   = 0;
+// pressed
+d_pad_up_pressed     = 0;
+d_pad_down_pressed   = 0;
+d_pad_right_pressed  = 0;
+d_pad_left_pressed   = 0;
+cross_key_pressed    = 0;
+circle_key_pressed   = 0;
+triangle_key_pressed = 0;
+square_key_pressed   = 0;
+
+// released
+d_pad_up_released     = 0;
+d_pad_down_released   = 0;
+d_pad_right_released  = 0;
+d_pad_left_released   = 0;
+cross_key_released    = 0;
+circle_key_released   = 0;
+triangle_key_released = 0;
+square_key_released   = 0;
 
 // find controller
 controller_id = 0;
